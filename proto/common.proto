@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "github.com/hughbliss/my_protobuf/gen/common";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Example API";
+    version: "1.0";
+  };
+  host: "example.com";
+  schemes: SCHEME_HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+};

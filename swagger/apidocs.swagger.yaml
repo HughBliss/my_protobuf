@@ -1,0 +1,67 @@
+swagger: "2.0"
+info:
+  title: Example API
+  version: "1.0"
+tags:
+  - name: SomeService
+host: example.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /some-service/example:
+    get:
+      summary: SomeExampleMethod method for example
+      operationId: SomeService_SomeExampleMethod
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/some_service_packageSomeExampleMethodResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: someText
+          description: SomeText field to provide some text
+          in: query
+          required: false
+          type: string
+        - name: someUnsignedIntegerValue
+          description: SomeUnsignedIntegerValue field to provide some integer with unsigned value
+          in: query
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - SomeService
+definitions:
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
+  some_service_packageSomeExampleMethodResponse:
+    type: object
+    properties:
+      someResponse:
+        type: string
+        title: SomeResponse field provides some text will returned from service

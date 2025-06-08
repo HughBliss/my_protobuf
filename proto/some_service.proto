@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package some_service_package;
+
+option go_package = "github.com/hughbliss/my_protobuf/gen/someservice";
+import "google/api/annotations.proto";
+
+
+// SomeService example
+service SomeService {
+  // SomeExampleMethod method for example
+  rpc SomeExampleMethod (SomeExampleMethodRequest) returns (SomeExampleMethodResponse) {
+    option (google.api.http) = {
+      get: "/some-service/example"
+    };
+  }
+}
+
+
+message SomeExampleMethodRequest {
+  // SomeText field to provide some text
+  string some_text = 1;
+  // SomeUnsignedIntegerValue field to provide some integer with unsigned value
+  uint32 some_unsigned_integer_value = 2;
+}
+
+message SomeExampleMethodResponse {
+  // SomeResponse field provides some text will returned from service
+  string some_response = 1;
+}
