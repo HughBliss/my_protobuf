@@ -3,6 +3,7 @@ info:
   title: Example API
   version: "1.0"
 tags:
+  - name: PermissionsService
   - name: SomeService
 host: example.com
 schemes:
@@ -12,6 +13,20 @@ consumes:
 produces:
   - application/json
 paths:
+  /auth/permissions:
+    get:
+      operationId: PermissionsService_GetAllPermissions
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/permissionsGetAllPermissionsResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - PermissionsService
   /some-service/example:
     get:
       summary: SomeExampleMethod method for example
@@ -20,7 +35,34 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/some_service_packageSomeExampleMethodResponse'
+            $ref: '#/definitions/v1SomeExampleMethodResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: someText
+          description: SomeText field to provide some text
+          in: query
+          required: false
+          type: string
+        - name: someUnsignedIntegerValue
+          description: SomeUnsignedIntegerValue field to provide some integer with unsigned value
+          in: query
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - SomeService
+  /some-service/example/another:
+    get:
+      summary: SomeExampleMethod method for example
+      operationId: SomeService_AnotherExampleMethod
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1SomeExampleMethodResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -40,6 +82,21 @@ paths:
       tags:
         - SomeService
 definitions:
+  permissionsGetAllPermissionsResponse:
+    type: object
+    properties:
+      permissions:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/permissionsPermissionMeta'
+  permissionsPermissionMeta:
+    type: object
+    properties:
+      alias:
+        type: string
+      description:
+        type: string
   protobufAny:
     type: object
     properties:
@@ -59,7 +116,7 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
-  some_service_packageSomeExampleMethodResponse:
+  v1SomeExampleMethodResponse:
     type: object
     properties:
       someResponse:

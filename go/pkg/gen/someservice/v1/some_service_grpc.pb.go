@@ -4,7 +4,7 @@
 // - protoc             v5.28.2
 // source: some_service.proto
 
-package someservice
+package someservicev1
 
 import (
 	context "context"
@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SomeService_SomeExampleMethod_FullMethodName = "/some_service_package.SomeService/SomeExampleMethod"
+	SomeService_SomeExampleMethod_FullMethodName    = "/some.service.v1.SomeService/SomeExampleMethod"
+	SomeService_AnotherExampleMethod_FullMethodName = "/some.service.v1.SomeService/AnotherExampleMethod"
 )
 
 // SomeServiceClient is the client API for SomeService service.
@@ -30,6 +31,8 @@ const (
 type SomeServiceClient interface {
 	// SomeExampleMethod method for example
 	SomeExampleMethod(ctx context.Context, in *SomeExampleMethodRequest, opts ...grpc.CallOption) (*SomeExampleMethodResponse, error)
+	// SomeExampleMethod method for example
+	AnotherExampleMethod(ctx context.Context, in *SomeExampleMethodRequest, opts ...grpc.CallOption) (*SomeExampleMethodResponse, error)
 }
 
 type someServiceClient struct {
@@ -50,6 +53,16 @@ func (c *someServiceClient) SomeExampleMethod(ctx context.Context, in *SomeExamp
 	return out, nil
 }
 
+func (c *someServiceClient) AnotherExampleMethod(ctx context.Context, in *SomeExampleMethodRequest, opts ...grpc.CallOption) (*SomeExampleMethodResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SomeExampleMethodResponse)
+	err := c.cc.Invoke(ctx, SomeService_AnotherExampleMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SomeServiceServer is the server API for SomeService service.
 // All implementations should embed UnimplementedSomeServiceServer
 // for forward compatibility.
@@ -58,6 +71,8 @@ func (c *someServiceClient) SomeExampleMethod(ctx context.Context, in *SomeExamp
 type SomeServiceServer interface {
 	// SomeExampleMethod method for example
 	SomeExampleMethod(context.Context, *SomeExampleMethodRequest) (*SomeExampleMethodResponse, error)
+	// SomeExampleMethod method for example
+	AnotherExampleMethod(context.Context, *SomeExampleMethodRequest) (*SomeExampleMethodResponse, error)
 }
 
 // UnimplementedSomeServiceServer should be embedded to have
@@ -69,6 +84,9 @@ type UnimplementedSomeServiceServer struct{}
 
 func (UnimplementedSomeServiceServer) SomeExampleMethod(context.Context, *SomeExampleMethodRequest) (*SomeExampleMethodResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SomeExampleMethod not implemented")
+}
+func (UnimplementedSomeServiceServer) AnotherExampleMethod(context.Context, *SomeExampleMethodRequest) (*SomeExampleMethodResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AnotherExampleMethod not implemented")
 }
 func (UnimplementedSomeServiceServer) testEmbeddedByValue() {}
 
@@ -108,16 +126,38 @@ func _SomeService_SomeExampleMethod_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SomeService_AnotherExampleMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SomeExampleMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SomeServiceServer).AnotherExampleMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SomeService_AnotherExampleMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SomeServiceServer).AnotherExampleMethod(ctx, req.(*SomeExampleMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SomeService_ServiceDesc is the grpc.ServiceDesc for SomeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SomeService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "some_service_package.SomeService",
+	ServiceName: "some.service.v1.SomeService",
 	HandlerType: (*SomeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SomeExampleMethod",
 			Handler:    _SomeService_SomeExampleMethod_Handler,
+		},
+		{
+			MethodName: "AnotherExampleMethod",
+			Handler:    _SomeService_AnotherExampleMethod_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

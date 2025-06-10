@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package some.auth.permissions;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/permissions/v1;perserv1";
+
+import "google/api/annotations.proto";
+import "acman/permissions.proto";
+
+service PermissionsService {
+  rpc GetAllPermissions (GetAllPermissionsRequest) returns(GetAllPermissionsResponse) {
+    option (acman.permissions.meta) = {
+      alias: "auth.permissions.read"
+      description: "Чтение всех существующих доступов"
+    };
+    option (google.api.http) = {
+      get: "/auth/permissions"
+    };
+  }
+}
+
+message GetAllPermissionsRequest {}
+message GetAllPermissionsResponse {
+  repeated acman.permissions.PermissionMeta permissions = 1;
+}

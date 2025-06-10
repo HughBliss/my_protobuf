@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package acman.permissions;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/acman/gen/permissions;acmanperms";
+
+import "google/protobuf/descriptor.proto";
+
+message PermissionMeta {
+  string alias = 1;
+  string description = 2;
+}
+
+// Опция для указания необходимого доступа для вызова метода
+extend google.protobuf.MethodOptions {
+  PermissionMeta meta = 50001;
+}

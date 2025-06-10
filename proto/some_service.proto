@@ -1,17 +1,31 @@
 syntax = "proto3";
 
-package some_service_package;
+package some.service.v1;
 
-option go_package = "github.com/hughbliss/my_protobuf/gen/someservice";
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/someservice/v1;someservicev1";
 import "google/api/annotations.proto";
-
+import 'acman/permissions.proto';
 
 // SomeService example
 service SomeService {
   // SomeExampleMethod method for example
   rpc SomeExampleMethod (SomeExampleMethodRequest) returns (SomeExampleMethodResponse) {
+    option (acman.permissions.meta) = {
+      alias: 'example.read',
+      description: 'Доступ для примера'
+    };
     option (google.api.http) = {
       get: "/some-service/example"
+    };
+  }
+  // SomeExampleMethod method for example
+  rpc AnotherExampleMethod (SomeExampleMethodRequest) returns (SomeExampleMethodResponse) {
+    option (acman.permissions.meta) = {
+      alias: 'example-another.read',
+      description: 'Доступ для примера'
+    };
+    option (google.api.http) = {
+      get: "/some-service/example/another"
     };
   }
 }
