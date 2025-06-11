@@ -4,6 +4,7 @@ info:
   version: "1.0"
 tags:
   - name: PermissionsService
+  - name: RolesService
   - name: SomeService
 host: example.com
 schemes:
@@ -27,6 +28,20 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - PermissionsService
+  /auth/roles:
+    get:
+      operationId: RolesService_GetAllRoles
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/rolesGetAllRolesResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - RolesService
   /some-service/example:
     get:
       summary: SomeExampleMethod method for example
@@ -82,6 +97,13 @@ paths:
       tags:
         - SomeService
 definitions:
+  commonDomain:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
   permissionsGetAllPermissionsResponse:
     type: object
     properties:
@@ -103,6 +125,37 @@ definitions:
       '@type':
         type: string
     additionalProperties: {}
+  rolesDomainRoles:
+    type: object
+    properties:
+      domain:
+        $ref: '#/definitions/commonDomain'
+      roles:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/rolesRole'
+  rolesGetAllRolesResponse:
+    type: object
+    properties:
+      domainRoles:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/rolesDomainRoles'
+  rolesRole:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      permissions:
+        type: array
+        items:
+          type: string
+      domainId:
+        type: string
   rpcStatus:
     type: object
     properties:

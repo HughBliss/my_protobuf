@@ -8,7 +8,6 @@ import (
 	"go/format"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
-	"os"
 	"text/template"
 )
 
@@ -19,11 +18,11 @@ func main() {
 	var methodPermissionMap = make(map[string]*acmanperms.PermissionMeta)
 	var permissionsMap = make(map[string]*acmanperms.PermissionMeta)
 
-	f, err := os.Create("./permissions-debug.json")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
+	//f, err := os.Create("./permissions-debug.json")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer f.Close()
 	//l := zerolog.New(f).With().Timestamp().Logger()
 
 	for _, file := range req.ProtoFile {

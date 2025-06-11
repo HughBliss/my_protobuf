@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package some.auth.roles;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/roles/v1;roleserv1";
+
+import "google/api/annotations.proto";
+import "acman/permissions.proto";
+import "common.proto";
+
+
+service RolesService {
+  rpc GetAllRoles (GetAllRolesRequest) returns(GetAllRolesResponse) {
+    option (acman.permissions.meta) = {
+      alias: "auth.roles.read"
+      description: "Чтение всех существующих ролей"
+    };
+    option (google.api.http) = {
+      get: "/auth/roles"
+    };
+  }
+}
+
+message DomainRoles{
+  common.Domain domain = 1;
+  repeated Role roles = 2;
+}
+
+message Role {
+  string name = 1;
+  string description = 2;
+  repeated string permissions = 3;
+  string domain_id = 4;
+}
+
+message GetAllRolesRequest {}
+message GetAllRolesResponse {
+  repeated DomainRoles domain_roles = 1;
+}
