@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package some.admin.auth.users;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/admin/users/v1;admusrserv1";
+
+import "google/api/annotations.proto";
+import "acman/permissions.proto";
+import "common.proto";
+import "auth/roles.proto";
+import "auth/users.proto";
+
+// AdminUsersService предоставляет методы для управления пользователями системы.
+service AdminUsersService {
+  // CreateUser создает нового пользователя.
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.write"
+      description: "Создание и изменение пользователей"
+    };
+    option (google.api.http) = {
+      post: "/admin/users"
+      body: "*"
+    };
+  }
+
+  // UpdateUser обновляет информацию о пользователе.
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.write"
+      description: "Создание и изменение пользователей"
+    };
+    option (google.api.http) = {
+      put: "/admin/users"
+      body: "*"
+    };
+  }
+
+  // DeleteUser удаляет пользователя.
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.delete"
+      description: "Удаление пользователя"
+    };
+    option (google.api.http) = {
+      delete: "/admin/users/{user_id}"
+    };
+  }
+
+  // GetUsers возвращает список всех пользователей.
+  rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.read"
+      description: "Просмотр списка всех пользователей"
+    };
+    option (google.api.http) = {
+      get: "/admin/users"
+    };
+  }
+
+  // AssignUserToDomain назначает пользователю роль в домене.
+  rpc AssignUserToDomain (AssignUserToDomainRequest) returns (AssignUserToDomainResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.domains.assign"
+      description: "Назначение пользователю роли в домене"
+    };
+    option (google.api.http) = {
+      post: "/admin/users/{user_id}/domains"
+      body: "*"
+    };
+  }
+
+  // RemoveUserFromDomain удаляет пользователя из домена.
+  rpc RemoveUserFromDomain (RemoveUserFromDomainRequest) returns (RemoveUserFromDomainResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.domains.remove"
+      description: "Удаление пользователя из домена"
+    };
+    option (google.api.http) = {
+      delete: "/admin/users/{user_id}/domains/{domain_id}"
+    };
+  }
+
+  // UpdateUserDomainRole обновляет роль пользователя в домене.
+  rpc UpdateUserDomainRole (UpdateUserDomainRoleRequest) returns (UpdateUserDomainRoleResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.users.domains.update"
+      description: "Обновление роли пользователя в домене"
+    };
+    option (google.api.http) = {
+      put: "/admin/users/{user_id}/domains/{domain_id}/role"
+      body: "*"
+    };
+  }
+}
+
+
+// AssignUserToDomainRequest запрос на назначение пользователю роли в домене.
+message AssignUserToDomainRequest {
+  // UserId идентификатор пользователя.
+  string user_id = 1;
+  // DomainId идентификатор домена.
+  string domain_id = 2;
+  // RoleId идентификатор роли.
+  string role_id = 3;
+}
+
+// AssignUserToDomainResponse ответ на назначение пользователю роли в домене.
+message AssignUserToDomainResponse {
+  // UserDomains обновленная информация о пользователе.
+  UserDomains user_domains = 1;
+}
+
+// RemoveUserFromDomainRequest запрос на удаление пользователя из домена.
+message RemoveUserFromDomainRequest {
+  // UserId идентификатор пользователя.
+  string user_id = 1;
+  // DomainId идентификатор домена.
+  string domain_id = 2;
+}
+
+// RemoveUserFromDomainResponse ответ на удаление пользователя из домена.
+message RemoveUserFromDomainResponse {
+  // UserDomains обновленная информация о пользователе.
+  UserDomains user_domains = 1;
+}
+
+// UpdateUserDomainRoleRequest запрос на обновление роли пользователя в домене.
+message UpdateUserDomainRoleRequest {
+  // UserId идентификатор пользователя.
+  string user_id = 1;
+  // DomainId идентификатор домена.
+  string domain_id = 2;
+  // RoleId идентификатор новой роли.
+  string role_id = 3;
+}
+
+// UpdateUserDomainRoleResponse ответ на обновление роли пользователя в домене.
+message UpdateUserDomainRoleResponse {
+  // UserDomains обновленная информация о пользователе.
+  UserDomains user_domains = 1;
+}
+
+// UserDomains группирует информацию о пользователе и его ролях в доменах.
+message UserDomains {
+  // User информация о пользователе.
+  some.auth.users.User user = 1;
+  // DomainRoles список ролей пользователя по доменам.
+  repeated DomainRole domain_roles = 2;
+}
+
+// DomainRole связывает домен и роль пользователя.
+message DomainRole {
+  // Domain информация о домене.
+  common.Domain domain = 1;
+  // Role роль пользователя в домене.
+  some.auth.roles.Role role = 2;
+}
+
+// CreateUserRequest запрос на создание пользователя.
+message CreateUserRequest {
+  // User данные нового пользователя.
+  some.auth.users.User user = 1;
+}
+
+// CreateUserResponse ответ на создание пользователя.
+message CreateUserResponse {
+  // UserDomains информация о созданном пользователе.
+  UserDomains user_domains = 1;
+}
+
+// GetUserRequest запрос на получение информации о пользователе.
+message GetUserRequest {
+  // UserId идентификатор пользователя.
+  string user_id = 1;
+}
+
+// GetUserResponse ответ с информацией о пользователе.
+message GetUserResponse {
+  // UserDomains информация о пользователе.
+  UserDomains user_domains = 1;
+}
+
+// UpdateUserRequest запрос на обновление пользователя.
+message UpdateUserRequest {
+  // User обновленные данные пользователя.
+  some.auth.users.User user = 1;
+}
+
+// UpdateUserResponse ответ на обновление пользователя.
+message UpdateUserResponse {
+  // UserDomains обновленная информация о пользователе.
+  UserDomains user_domains = 1;
+}
+
+// DeleteUserRequest запрос на удаление пользователя.
+message DeleteUserRequest {
+  // UserId идентификатор пользователя.
+  string user_id = 1;
+}
+
+// DeleteUserResponse ответ на удаление пользователя.
+message DeleteUserResponse {}
+
+// GetUsersRequest запрос на получение списка пользователей.
+message GetUsersRequest {}
+
+// GetUsersResponse ответ со списком пользователей.
+message GetUsersResponse {
+  // Users список пользователей с их ролями в доменах.
+  repeated UserDomains users = 1;
+}

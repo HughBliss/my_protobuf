@@ -7,27 +7,81 @@ import (
 
 var Permissions = []*acmanperms.PermissionMeta{
 	{
+		Alias:       "auth.permissions.read",
+		Description: "Чтение всех существующих доступов",
+	}, {
+		Alias:       "admin.auth.roles.read",
+		Description: "Чтение всех существующих ролей",
+	}, {
+		Alias:       "admin.auth.roles.write",
+		Description: "Создание и редактирование ролей",
+	}, {
+		Alias:       "admin.auth.roles.delete",
+		Description: "Удаление ролей",
+	}, {
+		Alias:       "admin.users.write",
+		Description: "Создание и изменение пользователей",
+	}, {
+		Alias:       "admin.users.domains.assign",
+		Description: "Назначение пользователю роли в домене",
+	}, {
 		Alias:       "example.read",
 		Description: "Доступ для примера",
 	}, {
 		Alias:       "example-another.read",
 		Description: "Доступ для примера",
 	}, {
-		Alias:       "auth.permissions.read",
-		Description: "Чтение всех существующих доступов",
+		Alias:       "admin.users.delete",
+		Description: "Удаление пользователя",
 	}, {
-		Alias:       "auth.roles.read",
-		Description: "Чтение всех существующих ролей",
+		Alias:       "admin.users.read",
+		Description: "Просмотр списка всех пользователей",
+	}, {
+		Alias:       "admin.users.domains.remove",
+		Description: "Удаление пользователя из домена",
+	}, {
+		Alias:       "admin.users.domains.update",
+		Description: "Обновление роли пользователя в домене",
 	},
 }
 
 var MethodPermissionMap = map[string]*acmanperms.PermissionMeta{
-	"/some.auth.permissions.PermissionsService/GetAllPermissions": {
+	"/some.admin.auth.roles.AdminRolesService/CreateRole": {
+		Alias:       "admin.auth.roles.write",
+		Description: "Создание и редактирование ролей",
+	}, "/some.admin.auth.roles.AdminRolesService/DeleteRole": {
+		Alias:       "admin.auth.roles.delete",
+		Description: "Удаление ролей",
+	}, "/some.admin.auth.roles.AdminRolesService/GetAllRoles": {
+		Alias:       "admin.auth.roles.read",
+		Description: "Чтение всех существующих ролей",
+	}, "/some.admin.auth.roles.AdminRolesService/UpdateRole": {
+		Alias:       "admin.auth.roles.write",
+		Description: "Создание и редактирование ролей",
+	}, "/some.admin.auth.users.AdminUsersService/AssignUserToDomain": {
+		Alias:       "admin.users.domains.assign",
+		Description: "Назначение пользователю роли в домене",
+	}, "/some.admin.auth.users.AdminUsersService/CreateUser": {
+		Alias:       "admin.users.write",
+		Description: "Создание и изменение пользователей",
+	}, "/some.admin.auth.users.AdminUsersService/DeleteUser": {
+		Alias:       "admin.users.delete",
+		Description: "Удаление пользователя",
+	}, "/some.admin.auth.users.AdminUsersService/GetUsers": {
+		Alias:       "admin.users.read",
+		Description: "Просмотр списка всех пользователей",
+	}, "/some.admin.auth.users.AdminUsersService/RemoveUserFromDomain": {
+		Alias:       "admin.users.domains.remove",
+		Description: "Удаление пользователя из домена",
+	}, "/some.admin.auth.users.AdminUsersService/UpdateUser": {
+		Alias:       "admin.users.write",
+		Description: "Создание и изменение пользователей",
+	}, "/some.admin.auth.users.AdminUsersService/UpdateUserDomainRole": {
+		Alias:       "admin.users.domains.update",
+		Description: "Обновление роли пользователя в домене",
+	}, "/some.auth.permissions.PermissionsService/GetAllPermissions": {
 		Alias:       "auth.permissions.read",
 		Description: "Чтение всех существующих доступов",
-	}, "/some.auth.roles.RolesService/GetAllRoles": {
-		Alias:       "auth.roles.read",
-		Description: "Чтение всех существующих ролей",
 	}, "/some.service.v1.SomeService/AnotherExampleMethod": {
 		Alias:       "example-another.read",
 		Description: "Доступ для примера",

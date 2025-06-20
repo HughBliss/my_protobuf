@@ -3,8 +3,9 @@ info:
   title: Example API
   version: "1.0"
 tags:
+  - name: AdminRolesService
+  - name: AdminUsersService
   - name: PermissionsService
-  - name: RolesService
   - name: SomeService
 host: example.com
 schemes:
@@ -14,6 +15,245 @@ consumes:
 produces:
   - application/json
 paths:
+  /admin/auth/roles:
+    get:
+      summary: GetAllRoles возвращает список всех ролей по всем доменам.
+      operationId: AdminRolesService_GetAllRoles
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/rolesGetAllRolesResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - AdminRolesService
+    post:
+      summary: CreateRole создает новую роль в указанном домене.
+      operationId: AdminRolesService_CreateRole
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/rolesCreateRoleResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          description: CreateRoleRequest запрос на создание новой роли.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/rolesCreateRoleRequest'
+      tags:
+        - AdminRolesService
+    put:
+      summary: UpdateRole обновляет существующую роль.
+      operationId: AdminRolesService_UpdateRole
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/rolesUpdateRoleResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          description: UpdateRoleRequest запрос на обновление роли.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/rolesUpdateRoleRequest'
+      tags:
+        - AdminRolesService
+  /admin/auth/roles/{roleId}:
+    delete:
+      summary: DeleteRole удаляет роль по её идентификатору.
+      operationId: AdminRolesService_DeleteRole
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/rolesDeleteRoleResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: roleId
+          description: RoleId идентификатор роли для удаления.
+          in: path
+          required: true
+          type: string
+      tags:
+        - AdminRolesService
+  /admin/users:
+    get:
+      summary: GetUsers возвращает список всех пользователей.
+      operationId: AdminUsersService_GetUsers
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersGetUsersResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - AdminUsersService
+    post:
+      summary: CreateUser создает нового пользователя.
+      operationId: AdminUsersService_CreateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersCreateUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          description: CreateUserRequest запрос на создание пользователя.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/usersCreateUserRequest'
+      tags:
+        - AdminUsersService
+    put:
+      summary: UpdateUser обновляет информацию о пользователе.
+      operationId: AdminUsersService_UpdateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersUpdateUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          description: UpdateUserRequest запрос на обновление пользователя.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/usersUpdateUserRequest'
+      tags:
+        - AdminUsersService
+  /admin/users/{userId}:
+    delete:
+      summary: DeleteUser удаляет пользователя.
+      operationId: AdminUsersService_DeleteUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersDeleteUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: userId
+          description: UserId идентификатор пользователя.
+          in: path
+          required: true
+          type: string
+      tags:
+        - AdminUsersService
+  /admin/users/{userId}/domains:
+    post:
+      summary: AssignUserToDomain назначает пользователю роль в домене.
+      operationId: AdminUsersService_AssignUserToDomain
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersAssignUserToDomainResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: userId
+          description: UserId идентификатор пользователя.
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AdminUsersServiceAssignUserToDomainBody'
+      tags:
+        - AdminUsersService
+  /admin/users/{userId}/domains/{domainId}:
+    delete:
+      summary: RemoveUserFromDomain удаляет пользователя из домена.
+      operationId: AdminUsersService_RemoveUserFromDomain
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersRemoveUserFromDomainResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: userId
+          description: UserId идентификатор пользователя.
+          in: path
+          required: true
+          type: string
+        - name: domainId
+          description: DomainId идентификатор домена.
+          in: path
+          required: true
+          type: string
+      tags:
+        - AdminUsersService
+  /admin/users/{userId}/domains/{domainId}/role:
+    put:
+      summary: UpdateUserDomainRole обновляет роль пользователя в домене.
+      operationId: AdminUsersService_UpdateUserDomainRole
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/usersUpdateUserDomainRoleResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: userId
+          description: UserId идентификатор пользователя.
+          in: path
+          required: true
+          type: string
+        - name: domainId
+          description: DomainId идентификатор домена.
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AdminUsersServiceUpdateUserDomainRoleBody'
+      tags:
+        - AdminUsersService
   /auth/permissions:
     get:
       operationId: PermissionsService_GetAllPermissions
@@ -28,20 +268,6 @@ paths:
             $ref: '#/definitions/rpcStatus'
       tags:
         - PermissionsService
-  /auth/roles:
-    get:
-      operationId: RolesService_GetAllRoles
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/rolesGetAllRolesResponse'
-        default:
-          description: An unexpected error response.
-          schema:
-            $ref: '#/definitions/rpcStatus'
-      tags:
-        - RolesService
   /some-service/example:
     get:
       summary: SomeExampleMethod method for example
@@ -97,6 +323,23 @@ paths:
       tags:
         - SomeService
 definitions:
+  AdminUsersServiceAssignUserToDomainBody:
+    type: object
+    properties:
+      domainId:
+        type: string
+        description: DomainId идентификатор домена.
+      roleId:
+        type: string
+        description: RoleId идентификатор роли.
+    description: AssignUserToDomainRequest запрос на назначение пользователю роли в домене.
+  AdminUsersServiceUpdateUserDomainRoleBody:
+    type: object
+    properties:
+      roleId:
+        type: string
+        description: RoleId идентификатор новой роли.
+    description: UpdateUserDomainRoleRequest запрос на обновление роли пользователя в домене.
   commonDomain:
     type: object
     properties:
@@ -125,16 +368,40 @@ definitions:
       '@type':
         type: string
     additionalProperties: {}
+  rolesCreateRoleRequest:
+    type: object
+    properties:
+      role:
+        $ref: '#/definitions/rolesRole'
+        description: Role роль для создания.
+    description: CreateRoleRequest запрос на создание новой роли.
+  rolesCreateRoleResponse:
+    type: object
+    properties:
+      domainRoles:
+        $ref: '#/definitions/rolesDomainRoles'
+        description: DomainRoles обновленный список ролей домена.
+    description: CreateRoleResponse ответ на создание роли.
+  rolesDeleteRoleResponse:
+    type: object
+    properties:
+      domainRoles:
+        $ref: '#/definitions/rolesDomainRoles'
+        description: DomainRoles обновленный список ролей домена.
+    description: DeleteRoleResponse ответ на удаление роли.
   rolesDomainRoles:
     type: object
     properties:
       domain:
         $ref: '#/definitions/commonDomain'
+        description: Domain информация о домене.
       roles:
         type: array
         items:
           type: object
           $ref: '#/definitions/rolesRole'
+        description: Roles список ролей в домене.
+    description: DomainRoles группирует роли по домену.
   rolesGetAllRolesResponse:
     type: object
     properties:
@@ -143,19 +410,43 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/rolesDomainRoles'
+        description: DomainRoles список ролей сгруппированных по доменам.
+    description: GetAllRolesResponse ответ со списком всех ролей по доменам.
   rolesRole:
     type: object
     properties:
+      id:
+        type: string
+        title: Id идентификатор роли
       name:
         type: string
+        description: Name название роли.
       description:
         type: string
+        description: Description описание роли.
       permissions:
         type: array
         items:
           type: string
+        description: Permissions список разрешений роли.
       domainId:
         type: string
+        description: DomainId идентификатор домена, которому принадлежит роль.
+    description: Role описывает роль в системе.
+  rolesUpdateRoleRequest:
+    type: object
+    properties:
+      role:
+        $ref: '#/definitions/rolesRole'
+        description: Role обновленная роль.
+    description: UpdateRoleRequest запрос на обновление роли.
+  rolesUpdateRoleResponse:
+    type: object
+    properties:
+      domainRoles:
+        $ref: '#/definitions/rolesDomainRoles'
+        description: DomainRoles обновленный список ролей домена.
+    description: UpdateRoleResponse ответ на обновление роли.
   rpcStatus:
     type: object
     properties:
@@ -169,6 +460,110 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  usersAssignUserToDomainResponse:
+    type: object
+    properties:
+      userDomains:
+        $ref: '#/definitions/usersUserDomains'
+        description: UserDomains обновленная информация о пользователе.
+    description: AssignUserToDomainResponse ответ на назначение пользователю роли в домене.
+  usersCreateUserRequest:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/usersUser'
+        description: User данные нового пользователя.
+    description: CreateUserRequest запрос на создание пользователя.
+  usersCreateUserResponse:
+    type: object
+    properties:
+      userDomains:
+        $ref: '#/definitions/usersUserDomains'
+        description: UserDomains информация о созданном пользователе.
+    description: CreateUserResponse ответ на создание пользователя.
+  usersDeleteUserResponse:
+    type: object
+    description: DeleteUserResponse ответ на удаление пользователя.
+  usersDomainRole:
+    type: object
+    properties:
+      domain:
+        $ref: '#/definitions/commonDomain'
+        description: Domain информация о домене.
+      role:
+        $ref: '#/definitions/rolesRole'
+        description: Role роль пользователя в домене.
+    description: DomainRole связывает домен и роль пользователя.
+  usersGetUsersResponse:
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/usersUserDomains'
+        description: Users список пользователей с их ролями в доменах.
+    description: GetUsersResponse ответ со списком пользователей.
+  usersRemoveUserFromDomainResponse:
+    type: object
+    properties:
+      userDomains:
+        $ref: '#/definitions/usersUserDomains'
+        description: UserDomains обновленная информация о пользователе.
+    description: RemoveUserFromDomainResponse ответ на удаление пользователя из домена.
+  usersUpdateUserDomainRoleResponse:
+    type: object
+    properties:
+      userDomains:
+        $ref: '#/definitions/usersUserDomains'
+        description: UserDomains обновленная информация о пользователе.
+    description: UpdateUserDomainRoleResponse ответ на обновление роли пользователя в домене.
+  usersUpdateUserRequest:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/usersUser'
+        description: User обновленные данные пользователя.
+    description: UpdateUserRequest запрос на обновление пользователя.
+  usersUpdateUserResponse:
+    type: object
+    properties:
+      userDomains:
+        $ref: '#/definitions/usersUserDomains'
+        description: UserDomains обновленная информация о пользователе.
+    description: UpdateUserResponse ответ на обновление пользователя.
+  usersUser:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Id уникальный идентификатор пользователя.
+      name:
+        type: string
+        description: Name имя пользователя.
+      email:
+        type: string
+        description: Email адрес электронной почты пользователя.
+      passwordHash:
+        type: string
+        description: PasswordHash хэш пароля пользователя.
+      currentDomainId:
+        type: string
+        description: CurrentDomainId идентификатор текущего домена пользователя.
+    description: User описывает пользователя в системе.
+  usersUserDomains:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/usersUser'
+        description: User информация о пользователе.
+      domainRoles:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/usersDomainRole'
+        description: DomainRoles список ролей пользователя по доменам.
+    description: UserDomains группирует информацию о пользователе и его ролях в доменах.
   v1SomeExampleMethodResponse:
     type: object
     properties:

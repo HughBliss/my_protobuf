@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package some.admin.auth.roles;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/admin/roles/v1;admrolserv1";
+
+import "google/api/annotations.proto";
+import "acman/permissions.proto";
+import "common.proto";
+import "auth/roles.proto";
+// AdminRolesService предоставляет методы для управления ролями в системе.
+// Позволяет создавать, читать, обновлять и удалять роли в рамках доменов.
+service AdminRolesService {
+  // GetAllRoles возвращает список всех ролей по всем доменам.
+  rpc GetAllRoles (GetAllRolesRequest) returns(GetAllRolesResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.auth.roles.read"
+      description: "Чтение всех существующих ролей"
+    };
+    option (google.api.http) = {
+      get: "/admin/auth/roles"
+    };
+  }
+
+  // CreateRole создает новую роль в указанном домене.
+  rpc CreateRole (CreateRoleRequest) returns (CreateRoleResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.auth.roles.write"
+      description: "Создание и редактирование ролей"
+    };
+    option (google.api.http) = {
+      post: "/admin/auth/roles"
+      body: "*"
+    };
+  }
+
+  // UpdateRole обновляет существующую роль.
+  rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.auth.roles.write"
+      description: "Создание и редактирование ролей"
+    };
+    option (google.api.http) = {
+      put: "/admin/auth/roles"
+      body: "*"
+    };
+  }
+
+  // DeleteRole удаляет роль по её идентификатору.
+  rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {
+    option (acman.permissions.meta) = {
+      alias: "admin.auth.roles.delete"
+      description: "Удаление ролей"
+    };
+    option (google.api.http) = {
+      delete: "/admin/auth/roles/{role_id}"
+    };
+  }
+}
+// CreateRoleRequest запрос на создание новой роли.
+message CreateRoleRequest {
+  // Role роль для создания.
+  some.auth.roles.Role role = 1;
+}
+
+// CreateRoleResponse ответ на создание роли.
+message CreateRoleResponse {
+  // DomainRoles обновленный список ролей домена.
+  DomainRoles domain_roles = 1;
+}
+
+// UpdateRoleRequest запрос на обновление роли.
+message UpdateRoleRequest {
+  // Role обновленная роль.
+  some.auth.roles.Role role = 3;
+}
+
+// UpdateRoleResponse ответ на обновление роли.
+message UpdateRoleResponse {
+  // DomainRoles обновленный список ролей домена.
+  DomainRoles domain_roles = 1;
+}
+
+// DeleteRoleRequest запрос на удаление роли.
+message DeleteRoleRequest {
+  // RoleId идентификатор роли для удаления.
+  string role_id = 1;
+}
+
+// DeleteRoleResponse ответ на удаление роли.
+message DeleteRoleResponse {
+  // DomainRoles обновленный список ролей домена.
+  DomainRoles domain_roles = 1;
+}
+
+// DomainRoles группирует роли по домену.
+message DomainRoles {
+  // Domain информация о домене.
+  common.Domain domain = 1;
+  // Roles список ролей в домене.
+  repeated some.auth.roles.Role roles = 2;
+}
+
+
+// GetAllRolesRequest запрос на получение всех ролей.
+message GetAllRolesRequest {}
+
+// GetAllRolesResponse ответ со списком всех ролей по доменам.
+message GetAllRolesResponse {
+  // DomainRoles список ролей сгруппированных по доменам.
+  repeated DomainRoles domain_roles = 1;
+}

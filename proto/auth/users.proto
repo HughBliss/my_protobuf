@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+
+package some.auth.users;
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/users/v1;usrserv1";
+
+
+// User описывает пользователя в системе.
+message User {
+  // Id уникальный идентификатор пользователя.
+  string id = 1;
+  // Name имя пользователя.
+  string name = 2;
+  // Email адрес электронной почты пользователя.
+  string email = 3;
+  // PasswordHash хэш пароля пользователя.
+  string password_hash = 4;
+  // CurrentDomainId идентификатор текущего домена пользователя.
+  string current_domain_id = 5;
+}
