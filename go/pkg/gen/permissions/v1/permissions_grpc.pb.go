@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.2
-// source: auth/permissions.proto
+// source: authz/permissions.proto
 
 package perserv1
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PermissionsService_GetAllPermissions_FullMethodName = "/some.auth.permissions.PermissionsService/GetAllPermissions"
+	PermissionsService_GetAllPermissions_FullMethodName = "/some.authz.permissions.v1.PermissionsService/GetAllPermissions"
 )
 
 // PermissionsServiceClient is the client API for PermissionsService service.
@@ -106,7 +106,7 @@ func _PermissionsService_GetAllPermissions_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PermissionsService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "some.auth.permissions.PermissionsService",
+	ServiceName: "some.authz.permissions.v1.PermissionsService",
 	HandlerType: (*PermissionsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -115,5 +115,5 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth/permissions.proto",
+	Metadata: "authz/permissions.proto",
 }

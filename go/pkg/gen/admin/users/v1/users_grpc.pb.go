@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.2
-// source: admin_auth/users.proto
+// source: admin_authz/users.proto
 
 package admusrserv1
 
@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AdminUsersService_CreateUser_FullMethodName           = "/some.admin.auth.users.AdminUsersService/CreateUser"
-	AdminUsersService_UpdateUser_FullMethodName           = "/some.admin.auth.users.AdminUsersService/UpdateUser"
-	AdminUsersService_DeleteUser_FullMethodName           = "/some.admin.auth.users.AdminUsersService/DeleteUser"
-	AdminUsersService_GetUsers_FullMethodName             = "/some.admin.auth.users.AdminUsersService/GetUsers"
-	AdminUsersService_AssignUserToDomain_FullMethodName   = "/some.admin.auth.users.AdminUsersService/AssignUserToDomain"
-	AdminUsersService_RemoveUserFromDomain_FullMethodName = "/some.admin.auth.users.AdminUsersService/RemoveUserFromDomain"
-	AdminUsersService_UpdateUserDomainRole_FullMethodName = "/some.admin.auth.users.AdminUsersService/UpdateUserDomainRole"
+	AdminUsersService_CreateUser_FullMethodName           = "/some.admin.authz.users.v1.AdminUsersService/CreateUser"
+	AdminUsersService_UpdateUser_FullMethodName           = "/some.admin.authz.users.v1.AdminUsersService/UpdateUser"
+	AdminUsersService_DeleteUser_FullMethodName           = "/some.admin.authz.users.v1.AdminUsersService/DeleteUser"
+	AdminUsersService_GetUsers_FullMethodName             = "/some.admin.authz.users.v1.AdminUsersService/GetUsers"
+	AdminUsersService_AssignUserToDomain_FullMethodName   = "/some.admin.authz.users.v1.AdminUsersService/AssignUserToDomain"
+	AdminUsersService_RemoveUserFromDomain_FullMethodName = "/some.admin.authz.users.v1.AdminUsersService/RemoveUserFromDomain"
+	AdminUsersService_UpdateUserDomainRole_FullMethodName = "/some.admin.authz.users.v1.AdminUsersService/UpdateUserDomainRole"
 )
 
 // AdminUsersServiceClient is the client API for AdminUsersService service.
@@ -328,7 +328,7 @@ func _AdminUsersService_UpdateUserDomainRole_Handler(srv interface{}, ctx contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AdminUsersService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "some.admin.auth.users.AdminUsersService",
+	ServiceName: "some.admin.authz.users.v1.AdminUsersService",
 	HandlerType: (*AdminUsersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -361,5 +361,5 @@ var AdminUsersService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "admin_auth/users.proto",
+	Metadata: "admin_authz/users.proto",
 }

@@ -15,7 +15,7 @@ service SomeService {
       description: 'Доступ для примера'
     };
     option (google.api.http) = {
-      get: "/some-service/example"
+      get: "/v1/some-service/example"
     };
   }
   // SomeExampleMethod method for example
@@ -25,7 +25,7 @@ service SomeService {
       description: 'Доступ для примера'
     };
     option (google.api.http) = {
-      get: "/some-service/example/another"
+      get: "/v1/some-service/example/another"
     };
   }
 }

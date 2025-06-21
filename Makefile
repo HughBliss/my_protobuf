@@ -23,6 +23,7 @@ swagger:
 	protoc -I $(PROTO_DIR) \
 		--openapiv2_out=$(OPENAPI_OUT_OPTIONS):$(SWAGGER_DIR) \
 		$(PROTO_FILES)
+		cat $(SWAGGER_DIR)/apidocs.swagger.yaml | ./scripts/wrap_swagger_with_go.py > $(GO_GEN_DIR)/gen/swagger/swagger.go
 
 go-grpc:
 	protoc -I $(PROTO_DIR) \

@@ -1,4 +1,31 @@
-swagger: "2.0"
+package swagger
+
+import (
+	"bytes"
+	"text/template"
+)
+
+type Meta struct {
+	Title   string
+	Version string
+	Host    string
+}
+
+func GetSwagger(meta Meta) (string, error) {
+	tmpl, err := template.New("swagger").Parse(templateContent)
+	if err != nil {
+		return "", err
+	}
+
+	var buf bytes.Buffer
+	if err := tmpl.Execute(&buf, meta); err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
+}
+
+var templateContent = `swagger: "2.0"
 info:
   title: '{{.Title}}'
   version: '{{.Version}}'
@@ -753,3 +780,4 @@ securityDefinitions:
     description: 'Используйте формат: Bearer <JWT token>'
     name: Authorization
     in: header
+`

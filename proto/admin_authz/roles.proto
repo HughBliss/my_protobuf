@@ -1,35 +1,35 @@
 syntax = "proto3";
 
-package some.admin.auth.roles;
+package some.admin.authz.roles.v1;
 
 option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/admin/roles/v1;admrolserv1";
 
 import "google/api/annotations.proto";
 import "acman/permissions.proto";
 import "common.proto";
-import "auth/roles.proto";
+import "authz/roles.proto";
 // AdminRolesService предоставляет методы для управления ролями в системе.
 // Позволяет создавать, читать, обновлять и удалять роли в рамках доменов.
 service AdminRolesService {
   // GetAllRoles возвращает список всех ролей по всем доменам.
   rpc GetAllRoles (GetAllRolesRequest) returns(GetAllRolesResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.auth.roles.read"
+      alias: "admin.authz.roles.read"
       description: "Чтение всех существующих ролей"
     };
     option (google.api.http) = {
-      get: "/admin/auth/roles"
+      get: "/v1/admin/authz/roles"
     };
   }
 
   // CreateRole создает новую роль в указанном домене.
   rpc CreateRole (CreateRoleRequest) returns (CreateRoleResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.auth.roles.write"
+      alias: "admin.authz.roles.write"
       description: "Создание и редактирование ролей"
     };
     option (google.api.http) = {
-      post: "/admin/auth/roles"
+      post: "/v1/admin/authz/roles"
       body: "*"
     };
   }
@@ -37,11 +37,11 @@ service AdminRolesService {
   // UpdateRole обновляет существующую роль.
   rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.auth.roles.write"
+      alias: "admin.authz.roles.write"
       description: "Создание и редактирование ролей"
     };
     option (google.api.http) = {
-      put: "/admin/auth/roles"
+      put: "/v1/admin/authz/roles"
       body: "*"
     };
   }
@@ -49,18 +49,18 @@ service AdminRolesService {
   // DeleteRole удаляет роль по её идентификатору.
   rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.auth.roles.delete"
+      alias: "admin.authz.roles.delete"
       description: "Удаление ролей"
     };
     option (google.api.http) = {
-      delete: "/admin/auth/roles/{role_id}"
+      delete: "/v1/admin/authz/roles/{role_id}"
     };
   }
 }
 // CreateRoleRequest запрос на создание новой роли.
 message CreateRoleRequest {
   // Role роль для создания.
-  some.auth.roles.Role role = 1;
+  some.authz.roles.v1.Role role = 1;
 }
 
 // CreateRoleResponse ответ на создание роли.
@@ -72,7 +72,7 @@ message CreateRoleResponse {
 // UpdateRoleRequest запрос на обновление роли.
 message UpdateRoleRequest {
   // Role обновленная роль.
-  some.auth.roles.Role role = 3;
+  some.authz.roles.v1.Role role = 3;
 }
 
 // UpdateRoleResponse ответ на обновление роли.
@@ -98,7 +98,7 @@ message DomainRoles {
   // Domain информация о домене.
   common.Domain domain = 1;
   // Roles список ролей в домене.
-  repeated some.auth.roles.Role roles = 2;
+  repeated some.authz.roles.v1.Role roles = 2;
 }
 
 

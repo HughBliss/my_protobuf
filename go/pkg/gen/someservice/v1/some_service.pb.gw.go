@@ -113,7 +113,7 @@ func RegisterSomeServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/some.service.v1.SomeService/SomeExampleMethod", runtime.WithHTTPPathPattern("/some-service/example"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/some.service.v1.SomeService/SomeExampleMethod", runtime.WithHTTPPathPattern("/v1/some-service/example"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -133,7 +133,7 @@ func RegisterSomeServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/some.service.v1.SomeService/AnotherExampleMethod", runtime.WithHTTPPathPattern("/some-service/example/another"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/some.service.v1.SomeService/AnotherExampleMethod", runtime.WithHTTPPathPattern("/v1/some-service/example/another"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -191,7 +191,7 @@ func RegisterSomeServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/some.service.v1.SomeService/SomeExampleMethod", runtime.WithHTTPPathPattern("/some-service/example"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/some.service.v1.SomeService/SomeExampleMethod", runtime.WithHTTPPathPattern("/v1/some-service/example"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -208,7 +208,7 @@ func RegisterSomeServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/some.service.v1.SomeService/AnotherExampleMethod", runtime.WithHTTPPathPattern("/some-service/example/another"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/some.service.v1.SomeService/AnotherExampleMethod", runtime.WithHTTPPathPattern("/v1/some-service/example/another"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -225,8 +225,8 @@ func RegisterSomeServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 }
 
 var (
-	pattern_SomeService_SomeExampleMethod_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"some-service", "example"}, ""))
-	pattern_SomeService_AnotherExampleMethod_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"some-service", "example", "another"}, ""))
+	pattern_SomeService_SomeExampleMethod_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "some-service", "example"}, ""))
+	pattern_SomeService_AnotherExampleMethod_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "some-service", "example", "another"}, ""))
 )
 
 var (

@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package some.authn.v1;
+
+option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/authn/v1;authnv1";
+
+import "google/api/annotations.proto";
+// AuthenticationService предоставляет методы для аутентификации пользователей.
+service AuthenticationService {
+  // SignUp выполняет регистрацию нового пользователя в системе.
+  rpc SignUp (SignUpRequest) returns (SignUpResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/signup"
+      body: "*"
+    };
+  }
+
+  // SignIn выполняет аутентификацию существующего пользователя.
+  rpc SignIn (SignInRequest) returns (SignInResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/signin"
+      body: "*"
+    };
+  }
+
+  // RefreshToken обновляет истекающий access токен.
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/refresh"
+      body: "*"
+    };
+  }
+
+  // Authorize проверяет валидность токена и возвращает информацию о пользователе.
+  rpc Authorize (AuthorizeRequest) returns (AuthorizeResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/authorize"
+      body: "*"
+    };
+  }
+}
+
+// AuthorizeRequest запрос на проверку токена.
+message AuthorizeRequest {
+  // AccessToken JWT токен для проверки.
+  string access_token = 1;
+}
+
+// AuthorizeResponse ответ с данными пользователя из токена.
+message AuthorizeResponse {
+  // UserId уникальный идентификатор пользователя.
+  string user_id = 1;
+  // Email адрес электронной почты пользователя.
+  string email = 2;
+  // CurrentDomainId идентификатор текущего домена пользователя.
+  string current_domain_id = 3;
+  // CurrentRoleId
+  string current_role_id = 4;
+  // Permissions
+  repeated string permissions = 5;
+}
+
+// SignUpRequest запрос на регистрацию нового пользователя.
+message SignUpRequest {
+  // Email адрес электронной почты пользователя.
+  string email = 1;
+  // Password пароль пользователя.
+  string password = 2;
+  // Name имя пользователя.
+  string name = 3;
+}
+
+// SignUpResponse ответ на успешную регистрацию.
+message SignUpResponse {
+  // AccessToken JWT токен доступа.
+  string access_token = 1;
+  // RefreshToken токен для обновления access токена.
+  string refresh_token = 2;
+}
+
+// SignInRequest запрос на вход в систему.
+message SignInRequest {
+  // Email адрес электронной почты пользователя.
+  string email = 1;
+  // Password пароль пользователя.
+  string password = 2;
+}
+
+// SignInResponse ответ на успешную аутентификацию.
+message SignInResponse {
+  // AccessToken JWT токен доступа.
+  string access_token = 1;
+  // RefreshToken токен для обновления access токена.
+  string refresh_token = 2;
+}
+
+// RefreshTokenRequest запрос на обновление токена.
+message RefreshTokenRequest {
+  // RefreshToken токен для обновления access токена.
+  string refresh_token = 1;
+}
+
+// RefreshTokenResponse ответ с новыми токенами.
+message RefreshTokenResponse {
+  // AccessToken новый JWT токен доступа.
+  string access_token = 1;
+  // RefreshToken новый токен для обновления.
+  string refresh_token = 2;
+}

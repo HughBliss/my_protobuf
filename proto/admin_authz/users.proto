@@ -1,25 +1,25 @@
 syntax = "proto3";
 
-package some.admin.auth.users;
+package some.admin.authz.users.v1;
 
 option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/admin/users/v1;admusrserv1";
 
 import "google/api/annotations.proto";
 import "acman/permissions.proto";
 import "common.proto";
-import "auth/roles.proto";
-import "auth/users.proto";
+import "authz/roles.proto";
+import "authz/users.proto";
 
 // AdminUsersService предоставляет методы для управления пользователями системы.
 service AdminUsersService {
   // CreateUser создает нового пользователя.
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.write"
+      alias: "admin.authz.users.write"
       description: "Создание и изменение пользователей"
     };
     option (google.api.http) = {
-      post: "/admin/users"
+      post: "/v1/admin/users"
       body: "*"
     };
   }
@@ -27,11 +27,11 @@ service AdminUsersService {
   // UpdateUser обновляет информацию о пользователе.
   rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.write"
+      alias: "admin.authz.users.write"
       description: "Создание и изменение пользователей"
     };
     option (google.api.http) = {
-      put: "/admin/users"
+      put: "/v1/admin/users"
       body: "*"
     };
   }
@@ -39,33 +39,33 @@ service AdminUsersService {
   // DeleteUser удаляет пользователя.
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.delete"
+      alias: "admin.authz.users.delete"
       description: "Удаление пользователя"
     };
     option (google.api.http) = {
-      delete: "/admin/users/{user_id}"
+      delete: "/v1/admin/users/{user_id}"
     };
   }
 
   // GetUsers возвращает список всех пользователей.
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.read"
+      alias: "admin.authz.users.read"
       description: "Просмотр списка всех пользователей"
     };
     option (google.api.http) = {
-      get: "/admin/users"
+      get: "/v1/admin/users"
     };
   }
 
   // AssignUserToDomain назначает пользователю роль в домене.
   rpc AssignUserToDomain (AssignUserToDomainRequest) returns (AssignUserToDomainResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.domains.assign"
+      alias: "admin.authz.users.domains.assign"
       description: "Назначение пользователю роли в домене"
     };
     option (google.api.http) = {
-      post: "/admin/users/{user_id}/domains"
+      post: "/v1/admin/users/{user_id}/domains"
       body: "*"
     };
   }
@@ -73,22 +73,22 @@ service AdminUsersService {
   // RemoveUserFromDomain удаляет пользователя из домена.
   rpc RemoveUserFromDomain (RemoveUserFromDomainRequest) returns (RemoveUserFromDomainResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.domains.remove"
+      alias: "admin.authz.users.domains.remove"
       description: "Удаление пользователя из домена"
     };
     option (google.api.http) = {
-      delete: "/admin/users/{user_id}/domains/{domain_id}"
+      delete: "/v1/admin/users/{user_id}/domains/{domain_id}"
     };
   }
 
   // UpdateUserDomainRole обновляет роль пользователя в домене.
   rpc UpdateUserDomainRole (UpdateUserDomainRoleRequest) returns (UpdateUserDomainRoleResponse) {
     option (acman.permissions.meta) = {
-      alias: "admin.users.domains.update"
+      alias: "admin.authz.users.domains.update"
       description: "Обновление роли пользователя в домене"
     };
     option (google.api.http) = {
-      put: "/admin/users/{user_id}/domains/{domain_id}/role"
+      put: "/v1/admin/users/{user_id}/domains/{domain_id}/role"
       body: "*"
     };
   }
@@ -144,7 +144,7 @@ message UpdateUserDomainRoleResponse {
 // UserDomains группирует информацию о пользователе и его ролях в доменах.
 message UserDomains {
   // User информация о пользователе.
-  some.auth.users.User user = 1;
+  some.authz.users.v1.User user = 1;
   // DomainRoles список ролей пользователя по доменам.
   repeated DomainRole domain_roles = 2;
 }
@@ -154,13 +154,13 @@ message DomainRole {
   // Domain информация о домене.
   common.Domain domain = 1;
   // Role роль пользователя в домене.
-  some.auth.roles.Role role = 2;
+  some.authz.roles.v1.Role role = 2;
 }
 
 // CreateUserRequest запрос на создание пользователя.
 message CreateUserRequest {
   // User данные нового пользователя.
-  some.auth.users.User user = 1;
+  some.authz.users.v1.User user = 1;
 }
 
 // CreateUserResponse ответ на создание пользователя.
@@ -184,7 +184,7 @@ message GetUserResponse {
 // UpdateUserRequest запрос на обновление пользователя.
 message UpdateUserRequest {
   // User обновленные данные пользователя.
-  some.auth.users.User user = 1;
+  some.authz.users.v1.User user = 1;
 }
 
 // UpdateUserResponse ответ на обновление пользователя.

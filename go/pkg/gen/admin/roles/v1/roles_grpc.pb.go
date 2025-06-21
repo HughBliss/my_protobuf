@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.2
-// source: admin_auth/roles.proto
+// source: admin_authz/roles.proto
 
 package admrolserv1
 
@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AdminRolesService_GetAllRoles_FullMethodName = "/some.admin.auth.roles.AdminRolesService/GetAllRoles"
-	AdminRolesService_CreateRole_FullMethodName  = "/some.admin.auth.roles.AdminRolesService/CreateRole"
-	AdminRolesService_UpdateRole_FullMethodName  = "/some.admin.auth.roles.AdminRolesService/UpdateRole"
-	AdminRolesService_DeleteRole_FullMethodName  = "/some.admin.auth.roles.AdminRolesService/DeleteRole"
+	AdminRolesService_GetAllRoles_FullMethodName = "/some.admin.authz.roles.v1.AdminRolesService/GetAllRoles"
+	AdminRolesService_CreateRole_FullMethodName  = "/some.admin.authz.roles.v1.AdminRolesService/CreateRole"
+	AdminRolesService_UpdateRole_FullMethodName  = "/some.admin.authz.roles.v1.AdminRolesService/UpdateRole"
+	AdminRolesService_DeleteRole_FullMethodName  = "/some.admin.authz.roles.v1.AdminRolesService/DeleteRole"
 )
 
 // AdminRolesServiceClient is the client API for AdminRolesService service.
@@ -222,7 +222,7 @@ func _AdminRolesService_DeleteRole_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AdminRolesService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "some.admin.auth.roles.AdminRolesService",
+	ServiceName: "some.admin.authz.roles.v1.AdminRolesService",
 	HandlerType: (*AdminRolesServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -243,5 +243,5 @@ var AdminRolesService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "admin_auth/roles.proto",
+	Metadata: "admin_authz/roles.proto",
 }

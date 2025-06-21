@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 
-package some.auth.users;
+package some.authz.users.v1;
+
 option go_package = "github.com/hughbliss/my_protobuf/go/pkg/gen/users/v1;usrserv1";
 
 
